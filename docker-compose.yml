@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  petfamily-api:
+    image: ${DOCKER_REGISTRY-}petfamilyapi:v1
+    container_name: petfamily-api
+    build:
+      context: .
+      dockerfile: src/PetFamily.Api/Dockerfile
+    depends_on:
+      - petfamily-db
+
+  petfamily-db:
+    image: postgres
+    container_name: petfamily-db
+    environment:
+      - POSTGRES_DB=petfamily_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  
